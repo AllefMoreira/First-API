@@ -17,10 +17,8 @@ class NoteControllers{
                 url: link
             }
         })
-
-        if(linkInsert.note_id){
-            await knex("links").insert(linkInsert)
-        }
+        
+        await knex("links").insert(linkInsert)
         
         const tagInsert = tags.map(name => {
             return {
@@ -29,10 +27,8 @@ class NoteControllers{
                 user_id
             }
         })
-
-        if(tagInsert.note_id){
-            await knex("tags").insert(tagInsert)
-        }
+        
+        await knex("tags").insert(tagInsert)
         
 
         return res.json();
