@@ -40,4 +40,3 @@ app.listen(PORT, () => {console.log(`Server is running on port ${PORT}`)})
 O listen irá ficar observando a porta, e quando ela for inicializada irá 
 rodar a função que está como segundo argumento 
 */
-

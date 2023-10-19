@@ -1,6 +1,8 @@
 const {hash, compare} = require("bcryptjs")
 const AppError = require('../utils/AppError')
 const sqliteConnection = require("../database/SQLITE")
+const UserRepository = require("../repositories/UserRepository")
+const UserCreateServices = require("../services/UserCreateServices")
 
 //um controller pode ter no máximo 5 funções ou métodos:
 /*
@@ -14,19 +16,11 @@ class UserControllers{
     async create(req, res){
         const { name, email, password} = req.body
 
-        const database = await sqliteConnection()
-        const chefIfUserExist = await database.get("SELECT * FROM users WHERE email = (?)", [email])
+        const userRepository = new UserRepository()
+        const userCreateServices = new UserCreateServices(userRepository)
 
-        if (chefIfUserExist){  
-            throw new AppError("Este e-mail já está em uso.")
-        }
-
-        const hashedPassword = await hash(password, 8) //primeiro é o campo a ser criptografado e o segundo é o fator de complexidade
-
-        await database.run("INSERT INTO users (name, email, password) VALUES (?, ?, ?)", [name, email, hashedPassword])
-    
+        userCreateServices.execute({ name, email, password})
         return res.status(201).json()
-    
     }
 
     async update(req, res){
